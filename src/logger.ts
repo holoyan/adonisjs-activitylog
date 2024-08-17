@@ -1,17 +1,12 @@
-import { BaseModel } from '@adonisjs/lucid/orm'
-import {
-  LucidModel,
-  ModelAdapterOptions,
-  ModelQueryBuilderContract,
-} from '@adonisjs/lucid/types/model'
-import { LogModel, MorphInterface } from './types.js'
+import { ModelAssignOptions } from '@adonisjs/lucid/types/model'
+import { ActivityLogInterface, LogModel, MorphInterface, MyType } from './types.js'
 
 export class LogManager {
-  static _modelClass: typeof BaseModel
+  static _modelClass: MyType
 
   private static _map: MorphInterface
 
-  static setModelClass(modelClass: typeof BaseModel) {
+  static setModelClass(modelClass: MyType) {
     this._modelClass = modelClass
   }
 
@@ -25,10 +20,10 @@ export class LogManager {
 }
 
 export class ActivityBuilder {
-  private _adapterOptions?: ModelAdapterOptions
-  private _queryBuilder: ModelQueryBuilderContract<LucidModel, LucidModel> | null = null
+  private _adapterOptions?: ModelAssignOptions
 
-  queryOptions(options?: ModelAdapterOptions) {
+  private _state = {}
+  queryOptions(options?: ModelAssignOptions) {
     this._adapterOptions = options
     return this
   }
@@ -44,10 +39,12 @@ export class ActivityBuilder {
   private _entityId: string | number | null = null
   private _entityType: string | null = null
 
-  private _properties: Object | null = null
+  private _current: Object | null = null
+  private _previous: Object | null = null
+
   private _batchId: string | null = null
 
-  name(name: string) {
+  named(name: string) {
     this._name = name
     return this
   }
@@ -78,6 +75,11 @@ export class ActivityBuilder {
     if (typeof entity !== 'string') {
       this._entityId = entity.getModelId()
       this._entityType = LogManager.morphMap().getAlias(entity)
+
+      if ('toLog' in entity && typeof entity.toLog === 'function') {
+        const toLog = entity.toLog() as Object
+        this.havingCurrent(toLog)
+      }
     } else if (typeof entityId === 'string' || typeof entityId === 'number') {
       this._entityId = entityId
       this._entityType = entity
@@ -87,62 +89,55 @@ export class ActivityBuilder {
     return this
   }
 
-  havingProperties(state: Object) {
-    this._properties = state
+  havingCurrent(state: Object) {
+    this._current = state
     return this
   }
 
-  withBatch(batchId: string) {
+  previousState(state: Object) {
+    this._previous = state
+    return this
+  }
+
+  groupedBy(batchId: string) {
     this._batchId = batchId
     return this
   }
 
   log(message: string) {
-    const state = this.state()
-    state.description = message
-    // Here you would typically save the log to the database or perform the logging operation
-    console.log(state)
+    this._description = message
+
+    // @ts-ignore
+    return LogManager._modelClass.create(
+      this.state(),
+      this._adapterOptions
+    ) as unknown as Promise<ActivityLogInterface>
+  }
+
+  values(values: Object) {
+    this._state = { ...this._state, ...values }
+    return this
   }
 
   state() {
-    return {
+    this._state = {
+      ...this._state,
       name: this._name,
       model_id: this._modelId,
       model_type: this._modelType,
       event: this._event,
       entity_id: this._entityId,
       entity_type: this._entityType,
-      properties: this._properties,
+      current: this._current,
+      previous: this._previous,
       batch_id: this._batchId,
       description: this._description,
     }
-  }
 
-  customQuery(callback: (query: ModelQueryBuilderContract<LucidModel, LucidModel>) => void) {
-    callback(this.getBuilder())
-    return this
-  }
-
-  private getBuilder() {
-    if (!this._queryBuilder) {
-      this._queryBuilder = LogManager._modelClass.query(this._adapterOptions)
-    }
-    return this._queryBuilder
+    return this._state
   }
 }
 
 export function activity() {
   return new ActivityBuilder()
 }
-
-// Example usage:
-activity()
-  .by('User', 1)
-  .making('edit')
-  .on('Product', 2)
-  .havingProperties({})
-  .customQuery((query) => {
-    query.where('status', 'active')
-    query.where('created_at', '>=', new Date('2023-01-01'))
-  })
-  .log('Edited product')

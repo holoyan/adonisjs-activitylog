@@ -13,5 +13,22 @@
 */
 
 import ConfigureCommand from '@adonisjs/core/commands/configure'
+import { stubsRoot } from './stubs/main.js'
 
-export async function configure(_command: ConfigureCommand) {}
+export async function configure(_command: ConfigureCommand) {
+  const codemods = await _command.createCodemods()
+
+  /**
+   * Publish migration file
+   */
+  await codemods.makeUsingStub(stubsRoot, 'migrations/create_db.stub', {
+    prefix: new Date().getTime(),
+  })
+
+  /**
+   * Register provider
+   */
+  await codemods.updateRcFile((rcFile) => {
+    rcFile.addProvider('@holoyan/adonis-activitylog/activity_log_provider')
+  })
+}

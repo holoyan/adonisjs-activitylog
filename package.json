@@ -1,7 +1,7 @@
 {
   "name": "@holoyan/adonis-activitylog",
   "description": "AdonisJs activity log",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "engines": {
     "node": ">=20.6.0"
   },
@@ -17,7 +17,8 @@
   ],
   "exports": {
     ".": "./build/index.js",
-    "./types": "./build/src/types.js"
+    "./types": "./build/src/types.js",
+    "./activity_log_provider": "./build/providers/activity_log_provider.js"
   },
   "scripts": {
     "clean": "del-cli build",
@@ -50,20 +51,27 @@
     "@swc/core": "^1.4.6",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20.11.25",
+    "@types/uuid": "^9.0.8",
     "c8": "^9.1.0",
     "copyfiles": "^2.4.1",
     "del-cli": "^5.1.0",
-    "eslint": "^8.57.0",
+    "eslint": "^8.38.0",
     "luxon": "^3.4.4",
+    "mssql": "^10.0.2",
+    "mysql2": "^3.9.3",
     "np": "^10.0.0",
     "prettier": "^3.2.5",
+    "sqlite3": "^5.1.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.3.3",
+    "uuid": "^9.0.1"
   },
   "peerDependencies": {
     "@adonisjs/core": "^6.2.0",
     "@adonisjs/lucid": "^21.0.0",
-    "luxon": "^3.4.4"
+    "@types/uuid": "^9.0.8",
+    "luxon": "^3.4.4",
+    "uuid": "^9.0.1"
   },
   "publishConfig": {
     "access": "public",
@@ -87,5 +95,8 @@
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/package"
   },
-  "prettier": "@adonisjs/prettier-config"
+  "prettier": "@adonisjs/prettier-config",
+  "dependencies": {
+    "pg": "^8.12.0"
+  }
 }

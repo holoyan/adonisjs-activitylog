@@ -1,7 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, scope } from '@adonisjs/lucid/orm'
+import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { ActivityLogInterface, JSONObject } from '../types.js'
+import { changes, diff } from '../helpers.js'
 
-export default class ActivityLog extends BaseModel {
+export default class ActivityLog extends BaseModel implements ActivityLogInterface {
   @column({ isPrimary: true })
   declare id: number
 
@@ -27,7 +29,10 @@ export default class ActivityLog extends BaseModel {
   declare entity_id: string
 
   @column()
-  declare properties: Object
+  declare current: JSONObject
+
+  @column()
+  declare previous: JSONObject
 
   @column()
   declare batch_id: string
@@ -38,10 +43,11 @@ export default class ActivityLog extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  static published = scope((query) => {
-    query.where('publishedOn', '<=', DateTime.utc().toSQLDate())
-  })
-}
+  changes() {
+    return changes(this.previous, this.current)
+  }
 
-const a = ActivityLog.query()
-a.where('a', 4).withScopes((scopes) => scopes.published())
+  diff() {
+    return diff(this.previous, this.current)
+  }
+}
