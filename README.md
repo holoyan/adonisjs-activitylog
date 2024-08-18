@@ -23,6 +23,7 @@ Checkout other AdonisJS packages
   - [Changes vs Diff](#changes-vs-diff)
 - [Transactions](#transactions)
 - [Test](#test)
+- [Version map](#verion-map)
 - [License](#license)
 </p></details>
 
@@ -334,6 +335,15 @@ await trx.commit()
 ## Test
 
     npm run test
+
+## Version map
+
+
+| AdonisJS Lucid version | Package version |
+|------------------------|-----------------|
+| v20.x                  | 0.1.x           |
+| v21.x                  | 0.2.x           |
+
 
 ## License
 
