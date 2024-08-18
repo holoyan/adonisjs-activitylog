@@ -29,12 +29,12 @@ Checkout other AdonisJS packages
 
 ## Introduction
 
-The `@holoyan/adonis-activitylog` package provides easy to use functions to log the activities of the models(not only) of your app. The Package stores all activity in the `activity_logs` table.
+The `@holoyan/adonisjs-activitylog` package provides easy to use functions to log the activities of the models(not only) of your app. The Package stores all activity in the `activity_logs` table.
 
 Here's a demo of how you can use it:
 
 ```typescript
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const a = await activity().by(user).log('Look, I logged something')
 
@@ -46,7 +46,7 @@ const a = await activity().by(user).log('Look, I logged something')
 
 Next, publish config file
 
-    node ace configure @holoyan/adonis-activitylog
+    node ace configure @holoyan/adonisjs-activitylog
 
 this will create migration file in the `database/migrations` directory
 
@@ -64,8 +64,8 @@ Example.
 ```typescript
 
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-import { MorphMap } from '@holoyan/adonis-activitylog'
-import { LogModelInterface } from '@holoyan/adonis-activitylog'
+import { MorphMap } from '@holoyan/adonisjs-activitylog'
+import { LogModelInterface } from '@holoyan/adonisjs-activitylog'
 
 @MorphMap('users')
 export default class User extends BaseModel implements LogModelInterface {
@@ -104,7 +104,7 @@ The simplest way to log something is to call the `log` method
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const myLog = await activity().log('Look, I logged something')
 
@@ -114,7 +114,7 @@ If you need to specify the user call `by` method
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const myLog = await activity().by(user).log('Log by user')
 // or you can manually pass user alias and id
@@ -127,7 +127,7 @@ To specify event name call `making` method
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const myLog = await activity()
   .by(user)
@@ -140,7 +140,7 @@ To specify entity use `on` method
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const post = await Post.find(id)
 
@@ -157,7 +157,7 @@ To specify attributes you need to call `havingCurrent` method
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const myLog = await activity().by(user).making('update').on(post).havingCurrent({
   title: 'new title',
@@ -169,7 +169,7 @@ And of course you can save previous as well
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const myLog = await activity().by(user).making('update').on(post).havingCurrent({
   title: 'new title',
@@ -185,7 +185,7 @@ You can create `toLog` method inside the model in that case it will be automatic
 
 ```typescript
 
-import { MorphMap } from '@holoyan/adonis-activitylog'
+import { MorphMap } from '@holoyan/adonisjs-activitylog'
 
 
 @MorphMap('posts')
@@ -218,7 +218,7 @@ Sometimes you may want to group logs, or you need a way to log multiple entries 
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const batchId = uuid4();
 
@@ -232,7 +232,7 @@ const myLog2 = await activity().groupedBy(batchId).by(user).log('Log 2')
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const batchId = uuid4();
 
@@ -263,7 +263,7 @@ To retrieve log simply use `ActivityLog` model and make `lucid` [queries](https:
 
 ```typescript
 
-import { ActivityLog } from '@holoyan/adonis-activitylog'
+import { ActivityLog } from '@holoyan/adonisjs-activitylog'
 
 const log = await ActivityLog.query().where('model_type', 'users').where('model_id', user.id).first()
 console.log(log)
@@ -277,7 +277,7 @@ The package stores `previous` and `current` states of the model. You can retriev
 
 ```typescript
 
-import { activity } from '@holoyan/adonis-activitylog'
+import { activity } from '@holoyan/adonisjs-activitylog'
 
 const myLog = await activity().by(user).making('update').on('post').havingCurrent({
   title: 'new title',
@@ -309,7 +309,7 @@ You can do same on the model instance
 
 ```typescript
 
-import { ActivityLog } from '@holoyan/adonis-activitylog'
+import { ActivityLog } from '@holoyan/adonisjs-activitylog'
 
 const log = await ActivityLog.find(id)
 console.log(log.toString())

@@ -29,6 +29,6 @@ export async function configure(_command: ConfigureCommand) {
    * Register provider
    */
   await codemods.updateRcFile((rcFile) => {
-    rcFile.addProvider('@holoyan/adonis-activitylog/activity_log_provider')
+    rcFile.addProvider('@holoyan/adonisjs-activitylog/activity_log_provider')
   })
 }
