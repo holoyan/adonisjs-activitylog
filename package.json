@@ -1,7 +1,7 @@
 {
   "name": "@holoyan/adonisjs-activitylog",
   "description": "AdonisJs activity log",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "engines": {
     "node": ">=20.6.0"
   },
@@ -95,8 +95,5 @@
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/package"
   },
-  "prettier": "@adonisjs/prettier-config",
-  "dependencies": {
-    "pg": "^8.12.0"
-  }
+  "prettier": "@adonisjs/prettier-config"
 }
