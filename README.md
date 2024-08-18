@@ -41,7 +41,7 @@ const a = await activity().by(user).log('Look, I logged something')
 
 ## Installation
 
-    npm i @holoyan/adonis-activitylog
+    npm i @holoyan/adonisjs-activitylog
 
 Next, publish config file
 

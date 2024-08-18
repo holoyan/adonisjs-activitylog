@@ -1,5 +1,5 @@
 {
-  "name": "@holoyan/adonis-activitylog",
+  "name": "@holoyan/adonisjs-activitylog",
   "description": "AdonisJs activity log",
   "version": "0.1.0",
   "engines": {
