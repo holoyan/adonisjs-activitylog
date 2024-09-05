@@ -69,7 +69,7 @@
   "peerDependencies": {
     "@adonisjs/core": "^6.2.0",
     "@adonisjs/lucid": "^21.0.0",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "luxon": "^3.4.4",
     "uuid": "^10.0.0"
   },
