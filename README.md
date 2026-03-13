@@ -1,5 +1,10 @@
 # Log activity inside your AdonisJS app
 
+| Package version | AdonisJS version |
+|----------------|-----------------|
+| v0.x           | v6              |
+| v1.x           | v7              |
+
 Checkout other AdonisJS packages
 
 - [AdonisJS permissions](https://github.com/holoyan/adonisjs-permissions)
@@ -42,7 +47,13 @@ const a = await activity().by(user).log('Look, I logged something')
 
 ## Installation
 
+For AdonisJS v7 (latest):
+
     npm i @holoyan/adonisjs-activitylog
+
+For AdonisJS v6:
+
+    npm i @holoyan/adonisjs-activitylog@v0-latest
 
 Next, publish config file
 
@@ -343,6 +354,7 @@ await trx.commit()
 |------------------------|-----------------|
 | v20.x                  | 0.1.x           |
 | v21.x                  | 0.2.x           |
+| v22.x                  | 1.x             |
 
 
 ## License
